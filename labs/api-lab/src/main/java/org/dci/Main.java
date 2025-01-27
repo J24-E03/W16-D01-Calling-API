@@ -10,10 +10,17 @@ import java.net.URISyntaxException;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) throws URISyntaxException, IOException, InterruptedException {
-        printCountry("Italy");
+
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter a countries name you want to learn more about:\n");
+        String inputCountry = scanner.nextLine();
+        printCountry(inputCountry);
+        scanner.close();
+//        printCountry("GERMANY");
     }
 
     public static void printCountry(String country) throws URISyntaxException, IOException, InterruptedException {
@@ -30,8 +37,10 @@ public class Main {
         HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
 
 //        print response
-//        System.out.println(response.body());
-
+        if(response.statusCode() != 200) {
+            System.out.println("Sorry we couldn't find the country you are looking for :(");
+            return;
+        }
 //        convert to Json
         Gson gson = new Gson();
 
@@ -47,7 +56,7 @@ public class Main {
 
         System.out.println(countryName + " is a great country with a great " +
                            "population of " + population + " and is in " +
-                           continent + ". With the following capital: " + capital + "\n");
+                           continent + ". With the following capital: " + capital + ".\n");
 
     }
 }
