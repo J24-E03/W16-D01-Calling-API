@@ -51,7 +51,7 @@ public class Main {
 
         System.out.printf("%s is a great country with a great population of %d" +
                 " and is in %s continent. With the following capitals: %s\n", country.get("name").getAsJsonObject().get("official").getAsString(),
-                country.get("population").getAsInt(), country.get("continents").getAsString(), country.get("capital").getAsString());
+                country.get("population").getAsInt(), country.get("continents").getAsJsonArray().get(0).getAsString(), country.get("capital").getAsJsonArray().get(0).getAsString());
     }
 
     private static void getActorsInfo(Scanner scanner) throws URISyntaxException, IOException, InterruptedException {
