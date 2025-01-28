@@ -13,6 +13,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) {
@@ -49,9 +50,13 @@ public class Main {
         JsonArray countryInfo = gson.fromJson(response.body(), JsonArray.class);
         JsonObject country = countryInfo.get(0).getAsJsonObject();
 
+        List<JsonElement> continentlist = country.get("continents").getAsJsonArray().asList();
+        String continents = continentlist.stream().map(element -> element.getAsString()).collect(Collectors.joining(", "));
+
+
         System.out.printf("%s is a great country with a great population of %d" +
                 " and is in %s continent. With the following capitals: %s\n", country.get("name").getAsJsonObject().get("official").getAsString(),
-                country.get("population").getAsInt(), country.get("continents").getAsJsonArray().get(0).getAsString(), country.get("capital").getAsJsonArray().get(0).getAsString());
+                country.get("population").getAsInt(), continents, country.get("capital").getAsJsonArray().get(0).getAsString());
     }
 
     private static void getActorsInfo(Scanner scanner) throws URISyntaxException, IOException, InterruptedException {
